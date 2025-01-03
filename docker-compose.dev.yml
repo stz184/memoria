@@ -1,0 +1,26 @@
+version: "3.4"
+
+# Development environment override
+services:
+  backend:
+    build:
+      context: ./backend
+      target: dev
+    volumes:
+      - ./backend:/srv/app
+    environment:
+      NODE_ENV: development
+    ports:
+      - "4101:4101"
+
+  frontend:
+    build:
+      context: ./frontend
+      target: dev
+    volumes:
+      - ./frontend:/srv/app
+    environment:
+      NODE_ENV: development
+    ports:
+      - "3101:3000"
+

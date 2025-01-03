@@ -1,0 +1,41 @@
+version: "3.4"
+
+services:
+  backend:
+    build:
+      context: ./backend
+      target: prod
+    environment:
+      - MONGODB_CONNECTION_URI
+      - BACKEND_PORT
+      - OPEN_WEATHER_MAP_API_KEY
+      - RSS_FEED_URL
+    depends_on:
+      - mongodb
+    ports:
+      - "4101:4101"
+    restart: always
+
+  frontend:
+    build:
+      context: ./frontend
+      target: prod
+    ports:
+      - "3101:3000"
+    depends_on:
+      - backend
+
+  mongodb:
+    image: mongo:latest
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME
+      - MONGO_INITDB_ROOT_PASSWORD
+      - MONGO_INITDB_DATABASE
+    expose:
+      - "27017"
+    volumes:
+      - mongodb_data_container:/data/db
+    restart: always
+
+volumes:
+  mongodb_data_container:
